@@ -30,5 +30,12 @@ class App(tk.Tk):
     def create_window(self):
         """ Methode to call all methods that creates the different components.
         """
-        pass
+        self.input_field()
     
+
+    def  input_field(self):
+        """ Create an input field where you can write down your YouTube video link.
+        """
+        self.input_url = tk.Entry(self, width=71, borderwidth=3, font=("Bahnschrift 16"))
+        self.input_url.insert(0, "YouTube Link... (Bsp: https://www.youtube.com/...)")
+        self.input_url.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
