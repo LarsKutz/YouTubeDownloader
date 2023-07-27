@@ -6,6 +6,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter.filedialog import askdirectory
 from pathlib import Path
+from yt_download import download_mp3, download_mp4
 
 
 class App(tk.Tk):
@@ -36,6 +37,8 @@ class App(tk.Tk):
         self.input_field()
         self.download_format()
         self.select_folder()
+        self.download()
+        self.information()
     
 
     def  input_field(self):
@@ -75,3 +78,38 @@ class App(tk.Tk):
         self.select_folder_visuel.grid(row=1, column=2, padx=10, pady=5)
         self.selected_folder_label = tk.Label(self.select_folder_visuel, text=self.download_path, font=("Bahnschrift 11"))
         self.selected_folder_label.grid(row=0, column=0)
+
+
+    def cmd_download(self):
+        """ Downloading youtube video.
+        """
+        self.info_label.configure(text="")
+        success_mp3 = True
+        success_mp4 = True
+        if(self.var_mp3.get() == 1):  
+            success_mp3 = download_mp3(self.input_url.get(), self.last_download_label, self.download_path)    
+        if(self.var_mp4.get() == 1):  
+            success_mp4 = download_mp4(self.input_url.get(), self.last_download_label, self.download_path)
+
+        if success_mp3 and success_mp4:
+            self.info_label.configure(text="This download has completeted!", fg="green")
+        else:
+            self.info_label.configure(text="There has been an error in downloading your Youtube video! Pls Check your Link!", fg="red")
+    
+
+    def download(self):
+        """ Create a button and a visuel label for downloading.
+        """
+        self.btn_download = tk.Button(self, width=20, text="Download", command=self.cmd_download, font=("Bahnschrift 12"), activebackground="#BDBDBD", activeforeground="red")
+        self.btn_download.grid(row=2, column=1)
+        self.last_download_visuel = tk.LabelFrame(self, text="Last Download", font=("Bahnschrift 11"))
+        self.last_download_visuel.grid(row=2, column=2, padx=10, pady=5)
+        self.last_download_label = tk.Label(self.last_download_visuel, text="", font=("Bahnschrift 11"))
+        self.last_download_label.grid(row=0, column=0)
+
+
+    def information(self):
+        """ Label for information about successful downlaod or errors.
+        """
+        self.info_label = tk.Label(self, text="", font=("Bahnschrift 16"))
+        self.info_label.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
